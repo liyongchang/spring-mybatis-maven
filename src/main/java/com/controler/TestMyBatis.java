@@ -41,15 +41,21 @@ public class TestMyBatis {
     @Test
     public void test1() {
         User user=new User();
-        user.setId("123");
-        user.setSex("1");
         user.setName("lyc");
-        user.setMessage("dd");
-        user.setBirs(new Date());
-        userService.insert(user);
+        user.setEmail("9958@qq.com");
+        user.setPassword("122");
+        user.setUsername("lyc");
+        userService.insertUser(user);
         // System.out.println(user.getUserName());
         // logger.info("值："+user.getUserName());
         logger.info(JSON.toJSONString(user));
+    }
+
+    @Test
+    public void TestselectUserByID() {
+        User user=  userService.queryUserByID(7);
+        System.out.println(user);
+        System.out.println(user.getPassword());
     }
 
 }
