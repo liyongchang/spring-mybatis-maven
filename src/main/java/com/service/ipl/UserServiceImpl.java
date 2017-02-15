@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 @Service("userService")
 public class UserServiceImpl implements IUserService {
 
-    @Resource(name="userMapper")
+    @Resource(name = "userMapper")
     private UserMapper userMapper;
 
 
@@ -23,6 +23,10 @@ public class UserServiceImpl implements IUserService {
 
     public User queryUserByID(int id) {
         return this.userMapper.queryUserById(id);
+    }
+
+    public User selectPersonFetchOrder(int id) {
+        return this.userMapper.selectPersonFetchOrder(id);
     }
 
     public User findByUsername(String username) {
@@ -52,4 +56,6 @@ public class UserServiceImpl implements IUserService {
     public void delete(User existUser) {
 
     }
+
+
 }

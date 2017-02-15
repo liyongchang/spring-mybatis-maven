@@ -12,6 +12,8 @@ public interface IUserService {
 
     public User findByUsername(String username);
 
+    public User selectPersonFetchOrder(int id);
+
     public void save(User user);
 
     public User findByCode(String code);
@@ -23,10 +25,6 @@ public interface IUserService {
     public User findByUid(Integer uid);
 
     public void delete(User existUser);
-
-
-
-
 
 
 }

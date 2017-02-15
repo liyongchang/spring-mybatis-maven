@@ -1,7 +1,9 @@
 package com.controler;
 
 import com.alibaba.fastjson.JSON;
+import com.domain.Orders;
 import com.domain.User;
+import com.service.IOrdersService;
 import com.service.IUserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +25,8 @@ public class TestMyBatis {
     //  private ApplicationContext ac = null;
     @Resource
     private IUserService userService;
+    @Resource
+    private IOrdersService orderService;
 
 /*  @Before
   public void before() {
@@ -57,5 +61,31 @@ public class TestMyBatis {
         System.out.println(user);
         System.out.println(user.getPassword());
     }
+
+    //一对多，查询person（一）级联查询订单order（多）
+    @Test
+    public void testSelectPersonFetchOrder() throws Exception {
+
+        User user=userService.selectPersonFetchOrder(7);
+        System.out.println(user.toString());
+        System.out.println(user.getOrders().size());
+        for(Orders order:user.getOrders()){
+            System.out.println(order.toString());
+
+        }
+
+    }
+
+    //多对一，查询订单order（多）级联查询person（一）
+    @Test
+    public void testSelectOrdersFetchPerson() throws Exception{
+        Orders orders=orderService.selectOrdersFetchPerson(9000);
+        System.out.println(orders.toString());
+        System.out.println(orders.getUser().toString());
+
+    }
+
+
+
 
 }

@@ -1,5 +1,7 @@
 package com.domain;
 
+import java.util.Set;
+
 public class User {
     private Integer uid;
 
@@ -18,6 +20,16 @@ public class User {
     private Integer state;
 
     private String code;
+
+    private Set<Orders> orders;
+
+    public void setOrders(Set<Orders> orders) {
+        this.orders = orders;
+    }
+
+    public Set<Orders> getOrders() {
+        return orders;
+    }
 
     public Integer getUid() {
         return uid;
@@ -90,4 +102,23 @@ public class User {
     public void setCode(String code) {
         this.code = code == null ? null : code.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Person [id=" + uid + ", name=" + name + "]";
+    }
+
+    public User() {
+        super();
+    }
+
+    public User(int uid, String name, Set<Orders> orders) {
+        super();
+        this.uid = uid;
+        this.name = name;
+        this.orders = orders;
+    }
+
+
+
 }

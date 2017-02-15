@@ -40,7 +40,7 @@
         <!-- 自动扫描mapping.xml文件 -->
         <property name="mapperLocations">
            <list>
-               <value>classpath*:com/mapping/UserMapper.xml</value>
+               <value>classpath*:com/mapping/*.xml</value>
            </list>
         </property>
         <!--<property name="mapperLocations" value="classpath:com/mapper/UserMapper.xml"></property>-->
@@ -48,6 +48,11 @@
 
     <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.mapping.UserMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+
+    <bean id="ordersMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.mapping.OrdersMapper" />
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
 
