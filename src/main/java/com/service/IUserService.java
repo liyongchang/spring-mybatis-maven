@@ -1,10 +1,16 @@
 package com.service;
 
 import com.domain.User;
+import com.domain.UserCustom;
+import com.domain.UserQueryVo;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * Created by sw on 2016/11/28.
  */
+@Component("userMapper")
 public interface IUserService {
     public int insertUser(User user);
 
@@ -25,6 +31,8 @@ public interface IUserService {
     public User findByUid(Integer uid);
 
     public void delete(User existUser);
+
+    public List<UserCustom> findUserList(UserQueryVo userQueryVo) throws Exception;
 
 
 }

@@ -37,16 +37,21 @@
     <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
+
+        <!--如果 UserMapper 有一个对应的 MyBatis 的 XML 映射器文件, 如果 XML 文件在类路径的 位置和映射器类相同时,
+        它会被 MapperFactoryBean 自动解析。 没有必要在 MyBatis 配置文 件 中 去 指 定 映 射 器 ,
+        除 非 映 射 器 的 XML 文 件 在 不 同 的 类 路 径 下 。 可 以 参 考 SqlSessionFactoryBean
+        的 configLocation 属性(第三章)来获取更多信息。-->
         <!-- 自动扫描mapping.xml文件 -->
-        <property name="mapperLocations">
+        <!--<property name="mapperLocations">
            <list>
                <value>classpath*:com/mapping/*.xml</value>
            </list>
-        </property>
+        </property>-->
         <!--<property name="mapperLocations" value="classpath:com/mapper/UserMapper.xml"></property>-->
     </bean>
 
-    <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+  <!--<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.mapping.UserMapper" />
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
@@ -54,12 +59,17 @@
     <bean id="ordersMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="com.mapping.OrdersMapper" />
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-    </bean>
+    </bean>-->
 
     <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.mapping" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 
 </beans>

@@ -1,11 +1,14 @@
 package com.service.ipl;
 
 import com.domain.User;
+import com.domain.UserCustom;
+import com.domain.UserQueryVo;
 import com.mapping.UserMapper;
 import com.service.IUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by sw on 2016/11/28.
@@ -55,6 +58,10 @@ public class UserServiceImpl implements IUserService {
 
     public void delete(User existUser) {
 
+    }
+
+    public List<UserCustom> findUserList(UserQueryVo userQueryVo) throws Exception {
+        return this.userMapper.findUserList(userQueryVo);
     }
 
 

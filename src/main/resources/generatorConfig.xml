@@ -5,16 +5,16 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <!--mysql 连接数据库jar 这里选择自己本地位置-->
-    <classPathEntry location="mysql-connector-java-5.0.4-bin.jar" />
+    <classPathEntry location="ojdbc6.jar" />
     <context id="default" targetRuntime="MyBatis3">
         <commentGenerator>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
             <property name="suppressAllComments" value="true" />
         </commentGenerator>
         <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/shop" userId="root"
-                        password="root">
+        <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+                        connectionURL="jdbc:oracle:thin:@localhost:1521:xe" userId="idc_u_uniauth"
+                        password="kingstar">
         </jdbcConnection>
         <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
            NUMERIC 类型解析为java.math.BigDecimal -->
@@ -49,7 +49,7 @@
         <!-- 指定数据库表 -->
         <!--根据需要自行改动数据表-->
 
-        <table tableName="orders" domainObjectName="Orders" enableCountByExample="false" enableUpdateByExample="false"
+        <table tableName="UIDS_TB_ACCOUNTSECURITYMOBILE" domainObjectName="TbAccountSecurityMobileBaseMapper" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>
 </generatorConfiguration>

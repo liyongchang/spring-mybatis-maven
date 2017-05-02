@@ -2,16 +2,15 @@ package com.service.ipl;
 
 
 import com.domain.Orders;
-import com.domain.User;
 
 import com.mapping.OrdersMapper;
-import com.mapping.UserMapper;
 
 import com.service.IOrdersService;
-import com.service.IUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sw on 2016/11/28.
@@ -26,4 +25,8 @@ public class OrderServiceImpl implements IOrdersService {
     public Orders selectOrdersFetchPerson(Integer oid) {
         return this.ordersMapper.selectOrdersFetchPerson(oid);
     }
+    public List<Orders> findAllOrdersWithFy(Map map){
+        return this.ordersMapper.findAllOrdersWithFy(map);
+    }
+
 }

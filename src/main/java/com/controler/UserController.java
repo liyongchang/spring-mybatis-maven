@@ -2,6 +2,8 @@ package com.controler;
 
 import com.domain.User;
 import com.service.IUserService;
+import org.junit.Test;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -19,17 +21,22 @@ import javax.servlet.http.HttpServletResponse;
  * Created by yongchang.li on 2017/2/9.
  */
 @Controller
+@Scope("prototype")
 public class UserController {
     @Resource
     private IUserService userService;
 
-    @RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
+
+    @RequestMapping(value = {"/", "/welcome**"}, method = RequestMethod.GET)
+
     public ModelAndView welcomePage() {
 
         ModelAndView model = new ModelAndView();
         model.addObject("title", "Spring Security Hello World");
         model.addObject("message", "This is welcome page!");
         model.setViewName("hello");
+        System.out.println("测试spring的scope2");
+        System.out.println(this.hashCode());
         return model;
 
     }
@@ -51,10 +58,10 @@ public class UserController {
 
     }
 
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
@@ -62,9 +69,9 @@ public class UserController {
 
 
     @RequestMapping("/showUser")
-    public String toIndex(HttpServletRequest request, Model model){
+    public String toIndex(HttpServletRequest request, Model model) {
         System.out.println("892222wwwwwww");
-        User user=new User();
+        User user = new User();
         user.setName("qqqq222");
         user.setEmail("9958@qq.com");
         user.setPassword("123111");
@@ -73,6 +80,7 @@ public class UserController {
         model.addAttribute("user", user);
         return "showUser";
     }
+
 
 }
 

@@ -11,18 +11,38 @@
         <result column="addr" jdbcType="VARCHAR" property="addr"/>
         <result column="state" jdbcType="INTEGER" property="state"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
+
+        <!-- 订单信息
+    一个用户对应多个订单，使用collection映射
+     -->
+
         <collection property="orders" ofType="com.domain.Orders" column="uid">
-            <id column="oid" property="oid" jdbcType="INTEGER" />
-            <result column="total" property="total" jdbcType="DOUBLE" />
-            <result column="ordertime" property="ordertime" jdbcType="TIMESTAMP" />
-            <result column="state" property="state" jdbcType="INTEGER" />
-            <result column="name" property="name" jdbcType="VARCHAR" />
-            <result column="phone" property="phone" jdbcType="VARCHAR" />
-            <result column="addr" property="addr" jdbcType="VARCHAR" />
-            <result column="uid" property="uid" jdbcType="INTEGER" />
+            <id column="oid" property="oid" jdbcType="INTEGER"/>
+            <result column="total" property="total" jdbcType="DOUBLE"/>
+            <result column="ordertime" property="ordertime" jdbcType="TIMESTAMP"/>
+            <result column="state" property="state" jdbcType="INTEGER"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+            <result column="phone" property="phone" jdbcType="VARCHAR"/>
+            <result column="addr" property="addr" jdbcType="VARCHAR"/>
+            <result column="uid" property="uid" jdbcType="INTEGER"/>
+
+            <!-- 订单明细
+         一个订单包括 多个明细
+         -->
+            <!-- 商品信息
+           一个订单明细对应一个商品
+           -->
+
         </collection>
     </resultMap>
 
+    <!--collection：
+
+作用：将关联查询信息映射到一个list集合中。
+场合：为了方便查询遍历关联信息可以使用collection将关联信息映射到list集合中，比如：查询用户权限范围模块及模块下的菜单，
+可使用collection将模块映射到模块list中，将菜单列表映射到模块对象的菜单list属性中，这样的作的目的也是方便对查询结果集进行遍历查询。
+如果使用resultType无法将查询结果映射到list集合中。
+-->
 
 
     <sql id="userColumns"> ${alias}.id,${alias}.username,${alias}.password </sql>
@@ -71,7 +91,80 @@
 
     <select id="selectPersonFetchOrder" parameterType="int" resultMap="UserResultMap">
     select u.*,o.* from USER u,ORDERS o where o.uid=u.uid and u.uid=#{id}
-  </select>
+    </select>
+
+
+    <!-- 用户信息综合查询
+    #{userCustom.sex}:取出pojo包装对象中性别值
+    ${userCustom.username}：取出pojo包装对象中用户名称
+ -->
+    <!--    <select id="findUserList" parameterType="com.domain.UserQueryVo"
+                resultType="com.domain.UserCustom">
+            SELECT * FROM user
+            &lt;!&ndash;  where 可以自动去掉条件中的第一个and &ndash;&gt;
+            <where>
+                <if test="userCustom!=null">
+                    <if test="userCustom.state!=null and userCustom.state != '' ">
+                        AND user.state=#{userCustom.state}
+                    </if>
+                    <if test="userCustom.username!=null and userCustom.username != '' ">
+                        AND user.username LIKE '%${userCustom.username}%'
+                    </if>
+                </if>
+            </where>
+        </select>-->
+
+    <!--sql片段-->
+    <sql id="query_user_where">
+        <if test="userCustom!=null">
+            <if test="userCustom.state!=null and userCustom.state != '' ">
+                AND user.state=#{userCustom.state}
+            </if>
+            <if test="userCustom.username!=null and userCustom.username != '' ">
+                AND user.username LIKE '%${userCustom.username}%'
+            </if>
+        </if>
+    </sql>
+
+    <!-- <select id="findUserList" parameterType="com.domain.UserQueryVo"
+             resultType="com.domain.UserCustom">
+
+         SELECT * FROM user
+         &lt;!&ndash;  where 可以自动去掉条件中的第一个and &ndash;&gt;
+         <where>
+             &lt;!&ndash; 引用sql片段 的id，如果refid指定的id不在本mapper文件中，需要前边加namespace &ndash;&gt;
+             <include refid="query_user_where"></include>
+             &lt;!&ndash; 在这里还要引用其它的sql片段  &ndash;&gt;
+         </where>
+
+     </select>-->
+
+
+    <select id="findUserList" parameterType="com.domain.UserQueryVo"
+            resultType="com.domain.UserCustom">
+
+        SELECT * FROM user
+        <!--  where 可以自动去掉条件中的第一个and -->
+        <where>
+            <if test="ids!=null">
+
+                <!-- 使用 foreach遍历传入ids
+                    collection：指定输入 对象中集合属性
+                    item：每个遍历生成对象中
+                    open：开始遍历时拼接的串
+                    close：结束遍历时拼接的串
+                    separator：遍历的两个对象中需要拼接的串
+                     -->
+                <!-- 使用实现下边的sql拼接：
+                 AND (id=1 OR id=10 OR id=16)
+                 -->
+                <foreach collection="ids" item="user_id" open="AND (" close=")" separator="or">
+                    <!-- 每个遍历需要拼接的串 -->
+                    uid=#{user_id}
+                </foreach>
+            </if>
+        </where>
+    </select>
 
 
 </mapper>
